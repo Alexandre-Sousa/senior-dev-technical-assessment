@@ -1,4 +1,4 @@
-##Part 1 – Java Snippet
+## Part 1 – Java Snippet
 
 1. O primeiro erro, e talvez o mais gritante, consta no laço ***for***. Ele está fazendo a leitura do arquivo ***data.txt*** 10 vezes para fazer, em cada uma delas, a mesma operação: ler linha por linha do arquivo até seu fim (***EOF***), enquanto converte cada uma delas em letras maiúsculas e adiciona à lista ***lines***. Não vejo razão para isso e gasta recurso de processamento no servidor.
 
@@ -13,12 +13,13 @@ Neste caso, é recomendado usar o método ***synchronizedList*** da classe ***Co
 
 
 
-##Part 2 – C# Snippet
+## Part 2 – C# Snippet
 
 1. Está sendo declarada e instanciada a classe ***HttpClient*** em cada uma das chamadas do ***DownloadAsync***. Isso pode sobrecarregar o serviço. Uma melhor prática seria deixar essa instância global e reutilizá-la.
 
 2. São feitas diversas adições à lista ***cache***, o que pode ocorrer em concorrência e, por consequência, pode causar corrupção de dados. Seria uma boa prática instanciar globalmente uma variável para ser usada como chave para um mecanismo ***lock***, permitindo apenas um acesso por vez, e evitando esse conflito. Algo como:
 *private static readonly object lockObj = new object();
 lock(lockObj){cache.Add(data);}*
+
 
 3. Como citado no passo 4 do Java Snippet, caso seja importante saber a quantidade de linhas processadas e imprimir o resultado no log do servidor, é interessante usar mecanismo que force o código a aguardar todos os downloads antes de imprimir o total usando o ***cache.Count***.
